@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Harl.hpp                                           :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nicolewicki <nicolewicki@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 13:03:21 by nicolewicki       #+#    #+#             */
-/*   Updated: 2024/11/25 14:52:31 by nicolewicki      ###   ########.fr       */
+/*   Created: 2024/11/25 14:51:34 by nicolewicki       #+#    #+#             */
+/*   Updated: 2024/11/25 15:04:29 by nicolewicki      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HARL_HPP
-# define HARL_HPP
+#include "Harl.hpp"
 
-#include <iostream>
-
-class Harl
+int main(int argc, char **argv)
 {
-    private:
-        void debug( void );
-        void info( void );
-        void warning( void );
-        void error( void );
+    Harl harl;
     
-    public:
-        Harl();
-        ~Harl();
-        void complain( std::string level );
-};
-
-#endif
+    if (argc != 2)
+    {
+        std::cerr << "Bad amount of arguments." << std::endl;
+        return (1);
+    }
+    harl.complain(argv[1]);
+    return (0);
+}

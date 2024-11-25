@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nicolewicki <nicolewicki@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 13:03:13 by nicolewicki       #+#    #+#             */
-/*   Updated: 2024/11/25 13:18:20 by nicolewicki      ###   ########.fr       */
+/*   Created: 2024/11/25 14:51:42 by nicolewicki       #+#    #+#             */
+/*   Updated: 2024/11/25 15:10:13 by nicolewicki      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,29 @@ void Harl::error (void)
 
 void Harl::complain( std::string level )
 {
-    std::string complain[4] = {"DEBUG", "INFO", "WARNING", "ERROR"}; // create an array of strings
-	void (Harl::*pointer[4])(void) = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error}; // create an array of pointers to member functions
-	for (int i = 0; i < 4; i++) // loop through the array
-    {
-        if (level == complain[i]) // if the level is equal to the string in the array
-        {
-            (this->*pointer[i])(); // call the function at the same index in the array of pointers to member functions
-            return ; // exit the function
-        }
-    }
-	std::cout << "!![ DANGER ] Unknown ANGER status!!" << std::endl;
+	int i = 0;
+	std::string complain[4] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+	void (Harl::*ptmf[4])(void) = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
+	while (i < 4) // loop through the array until the level is found
+	{
+		if (level == complain[i])
+			break;
+		i++;
+	}
+	switch (i) // switch statement to call the function at the same index in the array of pointers to member functions
+	{
+	case 0: // if the level is DEBUG
+		(this->*ptmf[i++])(); // call debug() and increment i
+        // Fallthrough and call the next function
+	case 1:
+		(this->*ptmf[i++])();
+	case 2:
+		(this->*ptmf[i++])();
+	case 3:
+		(this->*ptmf[i++])();
+		return ; // exit the function when the last function is called
+	default: // if the level is not found
+		std::cout << "did u hear smth? no? me neither" << std::endl; // print a message
+		break;
+	}
 }
-
-/*
-Purpose of function pointer:
-- Flexibility: Dynamically choose which function to call based on runtime conditions.
-- Avoids Repetition: Replaces long if-else chains or switch statements.
-- Scalability: Easy to add more functions—just add to the complain and ptmf arrays.
-*/
