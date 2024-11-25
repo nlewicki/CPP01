@@ -6,74 +6,76 @@
 /*   By: nicolewicki <nicolewicki@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:38:04 by nicolewicki       #+#    #+#             */
-/*   Updated: 2024/11/22 11:40:26 by nicolewicki      ###   ########.fr       */
+/*   Updated: 2024/11/25 12:54:04 by nicolewicki      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FileReplacer.hpp"
+#include <iostream>
+#include <string>
+#include <fstream>
 
-void runTests() {
-    std::cout << "Running tests..." << std::endl;
-
-    // Create test file
-    {
-        std::ofstream testFile("test.txt");
-        testFile << "Hello world!\nThis is a test file.\nHello again world!\n";
-        testFile.close();
-    }
-
-    // Test 1: Basic replacement
-    {
-        FileReplacer replacer("test.txt", "world", "universe");
-        if (!replacer.replace())
-            std::cout << "Test 1 failed: Basic replacement failed" << std::endl;
-        else {
-            std::ifstream resultFile("test.txt.replace");
-            std::stringstream buffer;
-            buffer << resultFile.rdbuf();
-            std::string result = buffer.str();
-            if (result != "Hello universe!\nThis is a test file.\nHello again universe!\n")
-                std::cout << "Test 1 failed: Incorrect replacement" << std::endl;
-            else
-                std::cout << "Test 1 passed" << std::endl;
-        }
-    }
-
-    // Test 2: Empty search string
-    {
-        FileReplacer replacer("test.txt", "", "something");
-        if (replacer.replace())
-            std::cout << "Test 2 failed: Should fail with empty search string" << std::endl;
-        else
-            std::cout << "Test 2 passed" << std::endl;
-    }
-
-    // Test 3: Non-existent file
-    {
-        FileReplacer replacer("nonexistent.txt", "hello", "hi");
-        if (replacer.replace())
-            std::cout << "Test 3 failed: Should fail with non-existent file" << std::endl;
-        else
-            std::cout << "Test 3 passed" << std::endl;
-    }
-
-    // Cleanup test files
-    remove("test.txt");
-    remove("test.txt.replace");
+int	check_args(int argc, char **argv)
+{
+	if (argc != 4)
+	{
+		std::cerr << "Insufficient amount of arguments." << std::endl; //cerr is used to output errors
+		return (1);
+	}
+	std::fstream file(argv[1], std::ios::in); //fstream for reading file content (can also write)
+	if (!file.is_open()) //is_open() returns true if the file is open
+	{
+		std::cerr << "File \"" << argv[1] << "\"is inaccessible." << std::endl;
+		return (1);
+	}
+	file.close(); //close the file after opening with fstream
+	return (0);
 }
 
-int main(int argc, char* argv[]) {
-    if (argc == 2 && std::string(argv[1]) == "--test") {
-        runTests();
-        return 0;
-    }
-
-    if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << " <filename> <search_string> <replace_string>" << std::endl;
-        std::cerr << "   or: " << argv[0] << " --test to run tests" << std::endl;
-        return 1;
-    }
-
-    FileReplacer replacer(argv[1], argv[2], argv[3]);
-    return replacer.replace() ? 0 : 1;
+std::string	destFileName(const std::string &sourceFile)
+{
+	std::string	destFile = sourceFile;
+	std::string	newFiletype = ".replace";
+	size_t	pos = destFile.find_last_of('.');
+	if (pos == std::string::npos) // if the file has no extension
+		destFile.append(newFiletype); //append() is used to add a string at the end of another string
+	else // if the file has an extension
+	{
+		destFile.erase(pos); //erase() is used to remove extension characters from the string
+		destFile.append(newFiletype); // add the new extension
+	}
+	return (destFile); //return the new file name
 }
+
+int	copy_file(const std::string &sourceFile, const std::string &s1, const std::string &s2)
+{
+	std::string		destFile = destFileName(sourceFile); //get the new file name
+	std::ifstream	inFile(sourceFile);
+	std::ofstream	outFile(destFile);
+
+	std::string line;
+	while(std::getline(inFile, line)) //getline() is used to read a line from a file
+	{
+		size_t pos = line.find(s1); //find the position of the first occurrence of s1 in the line
+		while (pos != std::string::npos) //while s1 is found in the line
+		{
+			line.erase(pos, s1.length()); //erase the s1 from the line
+			line.insert(pos, s2); //insert s2 at the position of s1
+			pos = line.find(s1, pos + s2.length()); //find the next occurrence of s1 in the line
+		}
+		outFile << line << std::endl; //write the modified line to the new file
+	}
+	inFile.close(); //close the input file
+	outFile.close(); //close the output file
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	if(check_args(argc, argv))
+		return (1);
+	if(copy_file(argv[1], argv[2], argv[3]))
+		return(1);
+	return (0);
+}
+
+//test: ./loser blue.txt blue red
