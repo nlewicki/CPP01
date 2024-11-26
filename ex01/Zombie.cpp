@@ -6,7 +6,7 @@
 /*   By: nlewicki <nlewicki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:29:18 by nlewicki          #+#    #+#             */
-/*   Updated: 2024/11/21 12:10:25 by nlewicki         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:45:43 by nlewicki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ Zombie& Zombie::operator=(Zombie&& other) noexcept
 	}
 	return *this;
 }
-
-
 
 std::string	Zombie::getName() const
 {
