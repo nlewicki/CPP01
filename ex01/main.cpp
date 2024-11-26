@@ -6,7 +6,7 @@
 /*   By: nlewicki <nlewicki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:29:00 by nlewicki          #+#    #+#             */
-/*   Updated: 2024/11/21 12:09:15 by nlewicki         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:52:24 by nlewicki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ int	main(void)
 
 	for (int i = 0; i < 5; i++)
 		horde[i].announce();
-	delete [] horde;
+	delete [] horde; // delete the horde of zombies because it was created on the heap
 	return (0);
 }

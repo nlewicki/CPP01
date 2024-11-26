@@ -6,7 +6,7 @@
 /*   By: nlewicki <nlewicki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:09:20 by nlewicki          #+#    #+#             */
-/*   Updated: 2024/11/19 11:35:30 by nlewicki         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:50:56 by nlewicki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	Zombie::setName(std::string name)
 
 void	Zombie::announce(void)
 {
-	std::cout << "<" << name << "> BraiiiiiiinnnzzzZ..." << std::endl;
+	std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;
 }
 
 Zombie::Zombie() : name("Unnamed Zombie")

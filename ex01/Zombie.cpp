@@ -6,7 +6,7 @@
 /*   By: nlewicki <nlewicki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:29:18 by nlewicki          #+#    #+#             */
-/*   Updated: 2024/11/26 10:45:43 by nlewicki         ###   ########.fr       */
+/*   Updated: 2024/11/26 10:51:36 by nlewicki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ Zombie& Zombie::operator=(Zombie&& other) noexcept
 	return *this;
 }
 
+
+
 std::string	Zombie::getName() const
 {
 	return (name);
@@ -71,7 +73,7 @@ void	Zombie::setName(std::string name)
 
 void	Zombie::announce(void)
 {
-	std::cout << "<" << name << "> BraiiiiiiinnnzzzZ..." << std::endl;
+	std::cout << name << ": BraiiiiiiinnnzzzZ..." << std::endl;
 }
 
 
